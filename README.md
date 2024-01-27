@@ -11,6 +11,13 @@ This is a web application built using Flask that fetches and displays news artic
 - Allows users to swipe left, right, or up to express their preferences.
 - Records user preferences through AJAX requests to the server.
 
+## Screenshots
+![image](https://github.com/virajmane/SwipeNews/assets/62030782/b0142edb-f0ae-4773-a19c-929df43fa623)
+*Caption for Screenshot 1*
+
+![image](https://github.com/virajmane/SwipeNews/assets/62030782/bd58994c-d6aa-4fa8-ba84-6f4c180990b0)
+*Caption for Screenshot 2*
+
 ## Setup
 1. Install the required dependencies by running:
     ```bash
@@ -28,6 +35,7 @@ This is a web application built using Flask that fetches and displays news artic
 - `app.py`: Flask application file.
 - `newsscrapper.py`: Module for scraping news from inshorts.
 - `templates/`: HTML templates for the web app.
+- `screenshots/`: Folder containing screenshots of the app.
 
 ## Dependencies
 - Flask
