@@ -14,7 +14,6 @@ def index():
 def record_preference():
     direction = request.form.get('direction')
     news_id = request.form.get('newsId')
-
     # Handle the user's preference and update the database
     # Implement this based on your server-side logic
 

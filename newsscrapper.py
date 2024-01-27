@@ -29,7 +29,7 @@ def start():
             # Display the resulting dictionary
             for i in state_data["news_list"]["list"]:
                 lst = []
-                return [i['news_obj']['title'], i['news_obj']['content'], i['news_obj']['image_url']]
+                return [i['news_obj']['title'], i['news_obj']['content'], i['news_obj']['image_url'], i['news_obj']['hash_id']]
                 lst.append(i['news_obj']['content'])
                 lst.append(i['news_obj']['image_url'])
                 lst2.append(lst)

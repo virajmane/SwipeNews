@@ -96,7 +96,7 @@
         console.log('Swiped ' + direction);
 
         // Apply animation based on the direction
-        var translateValue = direction === 'left' ? '100%' : (direction === 'right' ? '-100%' : '0');
+        var translateValue = direction === 'right' ? '100%' : (direction === 'left' ? '-100%' : '0');
         $('#news-container').css('transform', 'translateX(' + translateValue + ')');
 
         // Send an AJAX request to the server to record the user's preference
