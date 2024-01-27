@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <style>
+        .container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #news-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            cursor: grab;
+            user-select: none;
+        }
+
+        .card {
+            min-width: 300px;
+            margin-right: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-img-top {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+    </style>
+    <title>News App</title>
+</head>
+<body>
+
+<div class="container mt-4">
+    <div id="news-container">
+        <div class="card">
+            <img src="{{ state_data[2] }}" class="card-img-top" alt="News Image">
+            <div class="card-body">
+                <h5 class="card-title">{{ state_data[0] }}</h5>
+                <p class="card-text">{{ state_data[1] }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var hammer = new Hammer(document.getElementById('news-container'));
+
+    hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });
+    
+    var startTransform = 0;
+
+    hammer.on('panstart', function (event) {
+        startTransform = getTransform();
+        $('#news-container').css('transition', 'none');
+    });
+
+    hammer.on('pan', function (event) {
+        var deltaX = startTransform + event.deltaX;
+        setTransform(deltaX);
+    });
+
+    hammer.on('panend', function (event) {
+        $('#news-container').css('transition', 'transform 0.5s ease-in-out');
+        
+        if (event.deltaX > 50) {
+            handleSwipe('right', '{{ state_data[3] }}');
+        } else if (event.deltaX < -50) {
+            handleSwipe('left', '{{ state_data[3] }}');
+        } else {
+            setTransform(0);
+        }
+    });
+
+    function getTransform() {
+        var matrix = $('#news-container').css('transform').split(',');
+        return parseInt(matrix[4]);
+    }
+
+    function setTransform(value) {
+        $('#news-container').css('transform', 'translateX(' + value + 'px)');
+    }
+
+    function handleSwipe(direction, newsId) {
+        console.log('Swiped ' + direction);
+
+        // Apply animation based on the direction
+        var translateValue = direction === 'left' ? '100%' : (direction === 'right' ? '-100%' : '0');
+        $('#news-container').css('transform', 'translateX(' + translateValue + ')');
+
+        // Send an AJAX request to the server to record the user's preference
+        // You may need to modify the URL and data based on your server-side logic
+        $.ajax({
+            url: '/record_preference',
+            type: 'POST',
+            data: { direction: direction, newsId: newsId },
+            success: function(response) {
+                // Handle success response if needed
+                console.log(response);
+
+                // Load the next news after the AJAX request is successful
+                location.reload();
+            },
+            error: function(error) {
+                // Handle error if needed
+                console.error(error);
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
